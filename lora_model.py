@@ -56,7 +56,7 @@ class LoraDecoderLayer(nn.Module):
     
 class LoraDecoder(nn.Module):
     def __init__(self,rank,decoder):
-        # __init__作用，定义一个词嵌入层，一个位置嵌入层，以及六个encodelayer
+        # __init__作用，定义一个词嵌入层，一个位置嵌入层，以及六个dncoder layer
         super(LoraDecoder,self).__init__()
         self.rank = rank
         self.word_emb = decoder.word_emb
