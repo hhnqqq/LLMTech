@@ -31,7 +31,7 @@ def get_rotate_vecs(
     # 一个长度atten_dim // 2的向量，每个位置为i/64，其中i=0，2，4.....,这一步求的是(2i/d)
     theta_i_e = torch.arange(0,atten_dim,2)[:(atten_dim // 2)].float() / atten_dim 
     theta_i = theta ** theta_i_e 
-    freqs = 1.0 / theta_i # 1/theta**(2i/d)不知道为什么是求倒数不是复数
+    freqs = 1.0 / theta_i # 1/theta**(2i/d)不知道为什么是求倒数不是负数
     position = torch.arange(seq_len) # [0, 1, 2, 3, ..., seq_len] 
     freqs = torch.outer(position,freqs).float() # 求向量的外积,维度为[seq_len,atten_dim]
     freqs_cis = torch.polar(torch.ones_like(freqs),freqs) #将上一步的结果写成复数的形式,模是1幅角是freqs
