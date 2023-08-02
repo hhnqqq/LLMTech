@@ -1,16 +1,19 @@
 import json
 import torch
-import torch.utils.data as Data
-from torch import nn, optim
 import time
-import numpy as np
-from model import *
-from tqdm import tqdm
 import sys
 import traceback
 import ast
 import re
+
+from model import *
+
+from tqdm import tqdm
+from torch import nn, optim
+
+import numpy as np
 import matplotlib.pyplot as plt
+import torch.utils.data as Data
 
 def make_data(datas):
     train_datas = []
@@ -136,7 +139,7 @@ def train(model,data_loader,learning_rate,epochs):
         
         
 if __name__ == '__main__':
-    datas = pd.read_json('/home/yuanyu/dev/hehaonan/gpt2-model/train.json')['dialog'].to_list()
+    datas = pd.read_json('./train.json')['dialog'].to_list()
     train_data = make_data(datas)
     
     train_data = [[word2id[i] if i in word2id else 0 for i in line] for line in train_data]
@@ -146,7 +149,7 @@ if __name__ == '__main__':
     dataset = TrainDataSet(train_data)
     data_loader = Data.DataLoader(dataset,batch_size=batch_size,collate_fn=dataset.pad_batch_data)
     model = GPT().to(device)
-    model.load_state_dict(torch.load('/home/yuanyu/dev/hehaonan/gpt2-model/checkpoint/gpt2_qkv_right_4.0.pt'))
+    model.load_state_dict(torch.load(''))
     
     train(model,data_loader,lr,epochs)        
     with open('loss_log.txt','r') as f:
