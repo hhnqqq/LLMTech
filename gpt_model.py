@@ -278,6 +278,6 @@ if __name__ == "__main__":
     # gen_para.no_repeat_ngram = 4
     gpt_model = GPT().to('cuda')
     # gpt_model = GPT()
-    gpt_model.load_state_dict(torch.load('/home/yuanyu/dev/hehaonan/gpt2-model/checkpoint/gpt2_qkv_right_4.0.pt'))
+    gpt_model.load_state_dict(torch.load('./checkpoint/gpt2_qkv_right_4.0.pt'))
     answer = gpt_model.answer('一起去北京玩吧\t',generation_parameters=gen_para)
     print(answer)
