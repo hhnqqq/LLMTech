@@ -22,7 +22,7 @@ from torch import nn,optim
 
 device = torch.device("cuda")
 # device = torch.device("cpu")
-dict_datas = json.load(open('/home/yuanyu/dev/hehaonan/gpt2-model/dict_datas.json', 'r'))
+dict_datas = json.load(open('./dict_datas.json', 'r'))
 word2id, id2word = dict_datas['word2id'], dict_datas['id2word']
 class ParaModel(BaseModel):
     max_pos: int = 1800 # 最大长度为1800
@@ -76,7 +76,7 @@ class GetScaledAttenScore(nn.Module):
         attention分数的维度为[batch_size,attention_heads,input_nums,input_nums]
         attention结果的维度为[batch_size,attention_heads,input_nunms,attention_dim]
         """
-        # 点积的大小和注意力矩阵的维度相关，为了保持数值稳定性，要除根号下的注意力维度【
+        # 点积的大小和注意力矩阵的维度相关，为了保持数值稳定性，要除根号下的注意力维度
         atten_scores = torch.matmul(Q,K.transpose(-1,-2)) / np.sqrt(model_parameters.attention_dim) # 注意力分数，维度为[batch_size,n_heads,input_nums,input_nums] 和mask的维度刚好相同
         # Decoder-only结构的后向musk
         atten_scores.masked_fill_(atten_musks, -1e9) # tensor.masked_fill_(mask, value)，将标记为true的位置替换为-1e9
@@ -148,7 +148,7 @@ class DecodeLayer(nn.Module):
     
 class Decoder(nn.Module):
     def __init__(self):
-        # __init__作用，定义一个词嵌入层，一个位置嵌入层，以及六个encodelayer
+        # __init__作用，定义一个词嵌入层，一个位置嵌入层，以及六个dncoder layer
         super(Decoder,self).__init__()
         self.word_emb = nn.Embedding(model_parameters.vocab_size,model_parameters.hidden_size)
         self.pos_emb = nn.Embedding(model_parameters.max_pos,model_parameters.hidden_size) # 可以短于，不可以超过
@@ -192,7 +192,6 @@ class GPT(nn.Module):
     def forward(self,input_vecs):
         output_vecs, attentions = self.decoder(input_vecs)
         output_vecs = self.projection(output_vecs)
-        
         return output_vecs.view(-1,output_vecs.size(-1)), attentions
     
     def auto_regressive_gen(self,input_vecs,generation_parameters):
@@ -212,7 +211,7 @@ class GPT(nn.Module):
             output_vecs, _ = self.decoder(input_vecs) # 这里其实已经成tensor了
             projected_vecs = self.projection(output_vecs)
             if generation_parameters.beam_search:
-                terminal,is_begin,prob_tree,input_vecs,node_lists,beam_search_window = utils.beam_search(
+                terminal,is_begin,prob_tree,input_vecs,node_lists,beam_search_window = utils.start_beam_search(
                     is_begin,
                     input_vecs,
                     projected_vecs,
