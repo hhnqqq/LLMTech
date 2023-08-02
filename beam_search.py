@@ -89,16 +89,6 @@ def beam_search(is_begin,input_vecs,projected_vecs,prob_tree,decoder,projection,
         print(f"最大概率链的概率是{max_prob_product}")
         input_vecs = beam_search_window[child_idx] # 取出概率树中概率乘积最大的根节点，这就是我们需要的
         new_result = input_vecs.squeeze(0).tolist()
-        if 2 in new_result[len(new_result)-3:len(new_result)]:
-            terminal = True
-            # index = torch.nonzero(input_vecs[:,input_vecs.shape[-1]-4:input_vecs.shape[-1]] == 2, as_tuple=False)
-            # if len(index) > 0:
-            #     index = index[0, -1]
-            #     index+=input_vecs[:,:input_vecs.shape[-1]-4].shape[-1]
-            # else:
-            #     index = input_vecs.shape[-1]
-            # if index < input_vecs.shape[-1]:
-            #     input_vecs = input_vecs[..., :index+1]
         beam_search_window = []
         is_begin = True
         prob_tree = ProbTreeNode(prob=1,idx=0)
