@@ -106,11 +106,8 @@ class MultiHeadsAttentionLayer(nn.Module):
         # 计算过程：[batch_size,input_nums,input_dimention] -> [batch_zie,input_nums,attention_dimention*attention_heads]
         # ->split->(batch_size,input_nums,attention_heads,attention_dim) -> transpose->(batch_size,attention_heads,input_nums,attention_dim)
         Q = self.weight_q(input_vecs).view(batch_size, -1, model_parameters.attention_heads, model_parameters.attention_dim).transpose(1, 2) 
-        K = self.weight_q(input_vecs).view(batch_size, -1, model_parameters.attention_heads, model_parameters.attention_dim).transpose(1, 2) 
-        V = self.weight_q(input_vecs).view(batch_size, -1, model_parameters.attention_heads, model_parameters.attention_dim).transpose(1, 2) 
-        # Q = self.weight_q(input_vecs).view(batch_size, -1, model_parameters.attention_heads, model_parameters.attention_dim).transpose(1, 2) 
-        # K = self.weight_k(input_vecs).view(batch_size, -1, model_parameters.attention_heads, model_parameters.attention_dim).transpose(1, 2) 
-        # V = self.weight_v(input_vecs).view(batch_size, -1, model_parameters.attention_heads, model_parameters.attention_dim).transpose(1, 2) 
+        K = self.weight_k(input_vecs).view(batch_size, -1, model_parameters.attention_heads, model_parameters.attention_dim).transpose(1, 2) 
+        V = self.weight_v(input_vecs).view(batch_size, -1, model_parameters.attention_heads, model_parameters.attention_dim).transpose(1, 2) 
     
         # 拓展attention_musk
         atten_masks = atten_masks.unsqueeze(1).repeat(1,model_parameters.attention_heads,1,1) #在第二维上加一维，并且在第二维上重复注意力头数
