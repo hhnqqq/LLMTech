@@ -73,7 +73,7 @@ def build_beam_search_tree(window_length: int,projected_vecs: torch.Tensor,paren
     parent_node.children = prob_node_list # 放入父节点的孩子中
     return parent_node, current_n_prob_indexes, prob_node_list
 
-def beam_search(is_begin,input_vecs,projected_vecs,prob_tree,decoder,projection,beam_search_window,node_lists,device):
+def start_beam_search(is_begin,input_vecs,projected_vecs,prob_tree,decoder,projection,beam_search_window,node_lists,device):
     if is_begin:
         # 如果是一轮beam_search开始，则需要保存概率树的根节点
         prob_tree, beam_search_window,node_lists = build_beam_search_tree(3,projected_vecs,prob_tree)
