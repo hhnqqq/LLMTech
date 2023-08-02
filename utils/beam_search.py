@@ -110,12 +110,5 @@ def start_beam_search(is_begin,input_vecs,projected_vecs,prob_tree,decoder,proje
         node_lists = temp_node_lists
         return terminal,is_begin,prob_tree,input_vecs,node_lists,beam_search_window
 
-def top_p(projected_vec: torch.Tensor, top_p = 0.1):
-    current_n_prob = projected_vec.squeeze(0)
-    _, current_n_indexes = current_n_prob[-1].sort(descending=True)
-    current_n_indexes = current_n_indexes[:int(current_n_indexes.shape[-1] * top_p)]
-    next_sambol = random.choice(current_n_indexes.tolist())
-    return next_sambol
-
 def cat_answer_tensor(input_vecs,new_vecs,device):
     return torch.cat([input_vecs.detach(),torch.tensor([new_vecs], dtype = input_vecs.dtype, device=device)],-1)
