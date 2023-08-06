@@ -35,7 +35,7 @@ def get_rotate_vecs(
     position = torch.arange(seq_len) # [0, 1, 2, 3, ..., seq_len] 
     freqs = torch.outer(position,freqs).float() # 求向量的外积,维度为[seq_len,atten_dim]
     freqs_cis = torch.polar(torch.ones_like(freqs),freqs) #将上一步的结果写成复数的形式,模是1幅角是freqs
-    return freqs_cis.view(1,seq_len,1,atten_dim//2)
+    return freqs_cis.view(1,1,seq_len,atten_dim//2)
 
 def get_origin_rotate_vecs(
     atten_dim: int,
@@ -50,7 +50,7 @@ def get_origin_rotate_vecs(
     position = torch.arange(seq_len) # [0, 1, 2, 3, ..., seq_len] 
     freqs = torch.outer(position,freqs).float() # 求向量的外积,维度为[seq_len,atten_dim] 
     freqs_cis = torch.polar(torch.ones_like(freqs),freqs) #将上一步的结果写成复数的形式,模是1幅角是freqs
-    return freqs_cis.view(1,seq_len,1,atten_dim//2)
+    return freqs_cis.view(1,1,seq_len,atten_dim//2)
      
 
 def apply_rope(
